@@ -24,10 +24,6 @@ spec:
         env:
         - name: uri
           value: https://github.com/mctlmk1/msa_config.git
-        - name: username
-          value: mctlmk
-        - name: password
-          value: mctlmk!1
       imagePullSecrets:
         - name: msa-secret
 ---

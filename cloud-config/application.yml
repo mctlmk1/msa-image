@@ -7,8 +7,8 @@ spring:
         git:
 #          uri:/Users/swmoon/Dev/Source/Config/SPRING-CLOUD-SAMPLE-CONFIG
           uri: ${uri}
-          username: ${username}
-          password: ${password}
+#          username: ${username}
+#          password: ${password}
 #          basedir: target/config
           force-pull: true
 
