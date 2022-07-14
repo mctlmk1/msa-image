@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-admin-deployment
+  labels:
+    app: cloud-admin
+  namespace: paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-admin
+  template:
+    metadata:
+      labels:
+        app: cloud-admin
+    spec:
+      containers:
+      - name: cloud-admin
+        image: 15.164.195.107:30002/paastacp/cloud-admin:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 2223
+        env:
+        - name: config-domain
+          value: cloud-config-deployment.paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas.svc.cluster.local
+        - name: eureka-domain
+          value: cloud-eureka-deployment.paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas.svc.cluster.local
+      imagePullSecrets:
+        - name: msa-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-admin-deployment
+  labels:
+    app: cloud-admin
+  namespace: paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas
+spec:
+  ports:
+  - nodePort: 32223
+    port: 2223
+    protocol: TCP
+    targetPort: 2223
+  selector:
+    app: cloud-admin
+  type: NodePort

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-api-two-deployment
+  labels:
+    app: cloud-api-two
+  namespace: paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-api-two
+  template:
+    metadata:
+      labels:
+        app: cloud-api-two
+    spec:
+      containers:
+      - name: cloud-api-two
+        image: 15.164.195.107:30002/paastacp/cloud-api-two:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 2225
+        env:
+        - name: config-domain
+          value: cloud-config-deployment.paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas.svc.cluster.local
+        - name: eureka-domain
+          value: cloud-eureka-deployment.paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas.svc.cluster.local
+        - name: SPRING_CLOUD_CLIENT_HOSTNAME
+          value: cloud-api-two-deployment.paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas.svc.cluster.local
+      imagePullSecrets:
+        - name: msa-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-api-two-deployment
+  labels:
+    app: cloud-api-two
+  namespace: paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas
+spec:
+  ports:
+  - nodePort: 32225
+    port: 2225
+    protocol: TCP
+    targetPort: 2225
+  selector:
+    app: cloud-api-two
+  type: NodePort

@@ -1,0 +1,22 @@
+spring:
+  application:
+      name: CloudGateWay
+
+server:
+  port: ${PORT:2226}
+
+# Discovery Server Access
+eureka:
+  client:
+          #registerWithEureka: true #유레카 서비스 등록
+    serviceUrl:
+      defaultZone: http://${eureka-domain}:2221/eureka/
+  instance:
+    preferIpAddress: true  # 서비스이름 대신 서비스 IP 주소 등록
+    hostname: ${spring.cloud.client.hostname}
+
+zuul:
+  routes:
+    microservice:
+      path: /microservice/**
+      url: http://${zuul-domain}:2224

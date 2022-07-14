@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-config-deployment
+  labels:
+    app: cloud-config
+  namespace: paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-config
+  template:
+    metadata:
+      labels:
+        app: cloud-config
+    spec:
+      containers:
+      - name: cloud-config
+        image: 15.164.195.107:30002/paastacp/cloud-config:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8004
+        env:
+        - name: uri
+          value: https://github.com/mctlmk1/msa_config.git
+        - name: username
+          value: mctlmk
+        - name: password
+          value: mctlmk!1
+      imagePullSecrets:
+        - name: msa-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-config-deployment
+  labels:
+    app: cloud-config
+  namespace: paas-30d87e54-269e-4c6f-871c-19dfba7eeec9-caas
+spec:
+  ports:
+  - nodePort: 31004
+    port: 8004
+    protocol: TCP
+    targetPort: 8004
+  selector:
+    app: cloud-config
+  type: NodePort
