@@ -37,6 +37,11 @@ $ sudo systemctl start podman
 curl -u {ID}:{PW} -k http://{HARBOR_IP}:30002/api/v2.0/projects -XPOST --data-binary "{\"project_name\": \"{PROJECT_NAME}\", \"public\": false}" -H "Content-Type: application/json" -i
 ```
 
+- Secret 생성
+```
+kubectl create secret docker-registry msa-secret --docker-server=http://{HARBOR_IP}:30002 --docker-username={ID} --docker-password={PW} -n {NAMESPACE}
+```
+
 ### Shell 
 - 파일내용 일괄변경
 ```
