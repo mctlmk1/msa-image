@@ -30,3 +30,15 @@ location = "3.37.105.130:30002"  // 신규추가
 $ sudo systemctl enable podman
 $ sudo systemctl start podman
 ```
+
+### HARBOR
+- Harbor 프로젝트생성
+```
+curl -u {ID}:{PW} -k http://{HARBOR_IP}:30002/api/v2.0/projects -XPOST --data-binary "{\"project_name\": \"{PROJECT_NAME}\", \"public\": false}" -H "Content-Type: application/json" -i
+```
+
+### Shell 
+- 파일내용 일괄변경
+```
+find . -name "*.yml" -exec sed -i 's/"원래문자열"/"변경할문자열"/g' {} \;
+```
